@@ -1,13 +1,13 @@
 package main
 
 import (
+	"crypto/sha256"
 	"errors"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
-	"crypto/sha256"
 )
 
 // A very simple http proxy
@@ -36,15 +36,15 @@ func simpleProxyHandlerFunc(w http.ResponseWriter, r *http.Request) {
 	L.Printf("%s %s %s %s\n", r.Method, r.RequestURI, r.Proto, r.RemoteAddr)
 
 	redirect := false
-	if msUpdatesDomainRequest(r)  {
+	if msUpdatesDomainRequest(r) {
 		// Schedual caching of the full object
 		if verbose {
 			L.Println("Allowed WindowsUpdates host", r.Host)
 		}
 		RemoveHopHeaders(r.Header)
 		if !r.URL.IsAbs() {
-			r.RequestURI = "http://"+ r.Host + r.URL.String()
-			r.URL, _= url.Parse(r.RequestURI)
+			r.RequestURI = "http://" + r.Host + r.URL.String()
+			r.URL, _ = url.Parse(r.RequestURI)
 		}
 
 	} else {
@@ -52,21 +52,21 @@ func simpleProxyHandlerFunc(w http.ResponseWriter, r *http.Request) {
 		return
 
 	}
-/*
-	} else if r.URL.IsAbs() {
-		// This is an error if is not empty on Client
-		r.RequestURI = ""
-		RemoveHopHeaders(r.Header)
-		//	} else if r.URL.Path == "/reload" {
-		//		self.reload(w, r)
-	} else {
-		if verbose {
-			L.Printf("%s is not a full URL path\n", r.RequestURI)
+	/*
+		} else if r.URL.IsAbs() {
+			// This is an error if is not empty on Client
+			r.RequestURI = ""
+			RemoveHopHeaders(r.Header)
+			//	} else if r.URL.Path == "/reload" {
+			//		self.reload(w, r)
+		} else {
+			if verbose {
+				L.Printf("%s is not a full URL path\n", r.RequestURI)
+			}
+			http.Error(w, r.RequestURI + " is not a full URL path\n", http.StatusInternalServerError)
+			return
 		}
-		http.Error(w, r.RequestURI + " is not a full URL path\n", http.StatusInternalServerError)
-		return
-	}
-*/
+	*/
 	start := time.Now()
 	var err error
 	var resp *http.Response
@@ -156,41 +156,41 @@ func copyHeaders(dst, src http.Header) {
 
 // copy and overwrite headers from r to w
 func CopyHeader(w http.ResponseWriter, r *http.Response) {
-        // copy headers
-        dst, src := w.Header(), r.Header
-        for k, _ := range dst {
-                dst.Del(k)
-        }
-        for k, vs := range src {
-                for _, v := range vs {
-                        dst.Add(k, v)
-                }
-        }
+	// copy headers
+	dst, src := w.Header(), r.Header
+	for k, _ := range dst {
+		dst.Del(k)
+	}
+	for k, vs := range src {
+		for _, v := range vs {
+			dst.Add(k, v)
+		}
+	}
 
-        // A hack to disable the defaults of GoLang ot add text/html content-type on an empty response
-        if dst.Get("Content-Type") == "" {
-                dst.Add("Content-Type", "    ")
-        }
+	// A hack to disable the defaults of GoLang ot add text/html content-type on an empty response
+	if dst.Get("Content-Type") == "" {
+		dst.Add("Content-Type", "    ")
+	}
 
 }
 
 var hopHeaders = []string{
-        // If no Accept-Encoding header exists, Transport will add the headers it can accept
-        // and would wrap the response body with the relevant reader.
-        "Accept-Encoding",
-        "Connection",
-        "Keep-Alive",
-        "Proxy-Authenticate",
-        "Proxy-Authorization",
-        "Te", // canonicalized version of "TE"
-        "Trailers",
-        "Transfer-Encoding",
-        "Upgrade",
-        "Proxy-Connection", // added by CURL  http://homepage.ntlworld.com/jonathan.deboynepollard/FGA/web-proxy-connection-header.html
+	// If no Accept-Encoding header exists, Transport will add the headers it can accept
+	// and would wrap the response body with the relevant reader.
+	"Accept-Encoding",
+	"Connection",
+	"Keep-Alive",
+	"Proxy-Authenticate",
+	"Proxy-Authorization",
+	"Te", // canonicalized version of "TE"
+	"Trailers",
+	"Transfer-Encoding",
+	"Upgrade",
+	"Proxy-Connection", // added by CURL  http://homepage.ntlworld.com/jonathan.deboynepollard/FGA/web-proxy-connection-header.html
 }
 
 func RemoveHopHeaders(h http.Header) {
-        for _, k := range hopHeaders {
-                h.Del(k)
-        }
+	for _, k := range hopHeaders {
+		h.Del(k)
+	}
 }

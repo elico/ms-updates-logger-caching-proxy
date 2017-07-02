@@ -21,13 +21,14 @@ const (
 )
 
 var (
-	listen       string
-	hostname     string
-	roundtripper bool
-	verbose      bool
-	retries      int
-	hashSum      bool
-	useDisk      bool
+	listen          string
+	hostname        string
+	addXCacheHeader bool
+	roundtripper    bool
+	verbose         bool
+	retries         int
+	hashSum         bool
+	useDisk         bool
 	//private      bool
 	dir       string
 	dumpHttp  bool
@@ -45,7 +46,7 @@ func init() {
 	flag.BoolVar(&verbose, "v", false, "show verbose output and debugging")
 	flag.BoolVar(&roundtripper, "rt", true, "Use GoLang RoundTripper instead of httpClient")
 	flag.BoolVar(&cacheHead, "head", false, "Cache HEAD request, FOR debug only")
-
+	flag.BoolVar(&addXCacheHeader, "add-x-cache", true, "Add X-Cache HIT header for responses served from localy from cache")
 	flag.IntVar(&retries, "retries", 4, "The number of http and connect retries")
 
 	flag.BoolVar(&hashSum, "hash-sum", true, "Calculate the sha256 digest of a response content enabled by default.")

@@ -107,7 +107,9 @@ func (myServer *MyServer) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if err == nil {
 		requeststore.CopyHeaders(headerObject.Header, w.Header())
 	}
-	w.Header().Set("X-Cache", "HIT from "+hostname)
+	if addXCacheHeader {
+		w.Header().Set("X-Cache", "HIT from "+hostname)
+	}
 	switch {
 	case req.Method == "GET":
 		http.ServeContent(w, req, req.URL.Path, object.ResponseTime, object)
