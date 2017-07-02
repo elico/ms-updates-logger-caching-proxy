@@ -8,6 +8,7 @@ export BINARY=ms-updates-logger-proxy_
 export GOOS=$1
 export GOARCH=$2
 export GOARM=$3
+export CGO_ENABLED=0
 case $GOOS in 
 	windows)
 		go build -o "./bin/`echo $BINARY``echo $GOOS`_`echo $GOARCH`.exe"
