@@ -96,6 +96,7 @@ func (myServer *MyServer) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 	if verbose {
 		fmt.Printf("Serving locally %s\n", req.URL.String())
+		w.Header().Set("X-Cache", "HIT from wupdate-cacher")
 		//t := fileStat.ModTime()
 		//fmt.Printf("time %+v\n", t)
 		fmt.Println(req.Header.Get("Range"))
