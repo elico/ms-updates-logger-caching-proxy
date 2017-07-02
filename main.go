@@ -22,15 +22,16 @@ const (
 
 var (
 	listen       string
+	hostname     string
 	roundtripper bool
 	verbose      bool
 	retries      int
 	hashSum      bool
 	useDisk      bool
 	//private      bool
-	dir      string
-	dumpHttp bool
-	cacheHead	bool
+	dir       string
+	dumpHttp  bool
+	cacheHead bool
 )
 
 var store requeststore.Store
@@ -40,6 +41,7 @@ func init() {
 	tr = newTransport()
 
 	flag.StringVar(&listen, "listen", defaultListen, "the host and port to bind to")
+	flag.StringVar(&hostname, "hostname", "wupdate-cacher", "The hostname to showup in the X-Cache header")
 	flag.BoolVar(&verbose, "v", false, "show verbose output and debugging")
 	flag.BoolVar(&roundtripper, "rt", true, "Use GoLang RoundTripper instead of httpClient")
 	flag.BoolVar(&cacheHead, "head", false, "Cache HEAD request, FOR debug only")

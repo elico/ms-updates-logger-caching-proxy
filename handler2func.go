@@ -78,7 +78,7 @@ func (myServer *MyServer) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	var object *requeststore.Response
 	var err error
 	switch {
-	case req.Method  == "GET":
+	case req.Method == "GET":
 		object, err = store.RetrieveResponse(req.Method + ":" + req.URL.Scheme + "://msupdates.ngtech.internal" + req.URL.Path)
 		if err != nil {
 			// Handle error
@@ -90,13 +90,12 @@ func (myServer *MyServer) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 		defer object.Close()
-	case req.Method  == "HEAD":
+	case req.Method == "HEAD":
 	default:
 		//
 	}
 	if verbose {
 		fmt.Printf("Serving locally %s\n", req.URL.String())
-		w.Header().Set("X-Cache", "HIT from wupdate-cacher")
 		//t := fileStat.ModTime()
 		//fmt.Printf("time %+v\n", t)
 		fmt.Println(req.Header.Get("Range"))
@@ -108,10 +107,11 @@ func (myServer *MyServer) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if err == nil {
 		requeststore.CopyHeaders(headerObject.Header, w.Header())
 	}
+	w.Header().Set("X-Cache", "HIT from "+hostname)
 	switch {
-	case req.Method  == "GET":
+	case req.Method == "GET":
 		http.ServeContent(w, req, req.URL.Path, object.ResponseTime, object)
-	case req.Method  == "HEAD":
+	case req.Method == "HEAD":
 		w.WriteHeader(headerObject.StatusCode)
 	default:
 		//
@@ -120,7 +120,7 @@ func (myServer *MyServer) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		fmt.Printf("Served locally %s\n", req.URL.String())
 	}
 	switch {
-	case req.Method  == "HEAD":
+	case req.Method == "HEAD":
 		fmt.Printf("Served locally %s %s %s\n", req.Method, req.URL.String(), "-1")
 	default:
 		fmt.Printf("Served locally %s %s %s\n", req.Method, req.URL.String(), w.Header().Get("Content-Length"))
