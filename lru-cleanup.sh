@@ -6,7 +6,7 @@ OLDERTHEN=30 # in days
 function cleanup() {
 	echo "Cleaning up $1 , for files older then $2"
 	if [ -d "$1" ];then
-		find $1 -type f -atime -$2 -print |xargs -l1 rm -v
+		find $1 -type f -atime +$2 -print |xargs -l1 rm -v
 	else
 		echo "$1 MISSING! , Aborted cleanup"
 	fi
