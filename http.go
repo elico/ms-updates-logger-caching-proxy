@@ -1,10 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"fmt"
+	"io"
 	"net/http"
-  "io"
-  "fmt"
-  "bytes"
 )
 
 // resp implements http.ResponseWriter writing
@@ -14,25 +14,24 @@ type dummyResp struct {
 }
 
 func newDummyResp() http.ResponseWriter {
-	return &dummyResp{ Writer: &bytes.Buffer{}, }
+	return &dummyResp{Writer: &bytes.Buffer{}}
 }
 
 func (w *dummyResp) Header() http.Header {
-  return make(http.Header)
+	return make(http.Header)
 }
 
-func (w *dummyResp) WriteHeader(h int)   {
-  w.h = h
+func (w *dummyResp) WriteHeader(h int) {
+	w.h = h
 }
 
-func (w *dummyResp) String() string      {
-  return fmt.Sprintf("[%v] %q", w.h, w.Writer)
+func (w *dummyResp) String() string {
+	return fmt.Sprintf("[%v] %q", w.h, w.Writer)
 }
-
 
 func (w *dummyResp) Write(buf []byte) (int, error) {
-    		w.WriteHeader(len(buf))
-    		return len(buf), nil
+	w.WriteHeader(len(buf))
+	return len(buf), nil
 }
 
 /*

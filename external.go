@@ -15,7 +15,7 @@ func msUpdatesDomainRequest(req *http.Request) bool {
 	}
 	// Ms domains:
 	// - .sfx.ms
-	
+
 	return false
 }
 

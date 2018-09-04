@@ -3,8 +3,8 @@ Description=ms-updates-store
 #Requires=networking.service
 
 [Service]
-#ExecStart=/usr/bin/ms-updates-logger-proxy_linux_amd64 -listen=:8080 -dir=/var/storedata
-ExecStart=/usr/bin/ms-updates-logger-proxy_linux_amd64 -listen=:8080 -dir=/home/eliezer/Scripts/ms-updates-logger-proxy
+ExecStart=/usr/bin/ms-updates-logger-proxy_linux_amd64 -listen=:8080 -dir=/var/storedata
+#ExecStart=/usr/bin/ms-updates-logger-proxy_linux_amd64 -listen=:8080 -dir=/home/eliezer/Scripts/ms-updates-logger-proxy
 
 [Install]
 WantedBy=multi-user.target

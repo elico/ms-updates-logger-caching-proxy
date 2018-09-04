@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 STOREFOLDER=/var/storedata/
-OLDERTHEN=30
+OLDERTHEN=30 # in days
 
 function cleanup() {
 	echo "Cleaning up $1 , for files older then $2"

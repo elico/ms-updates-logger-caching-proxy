@@ -1,10 +1,11 @@
 package main
 
 import (
-	"./requeststore"
 	"fmt"
 	"net/http"
 	"os"
+
+	"github.com/elico/requeststore-v1"
 )
 
 var mux http.Handler

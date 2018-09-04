@@ -154,7 +154,7 @@ func copyHeaders(dst, src http.Header) {
 	}
 }
 
-// copy and overwrite headers from r to w
+// CopyHeader copy and overwrite headers from r to w
 func CopyHeader(w http.ResponseWriter, r *http.Response) {
 	// copy headers
 	dst, src := w.Header(), r.Header
@@ -189,6 +189,7 @@ var hopHeaders = []string{
 	"Proxy-Connection", // added by CURL  http://homepage.ntlworld.com/jonathan.deboynepollard/FGA/web-proxy-connection-header.html
 }
 
+// RemoveHopHeaders ---
 func RemoveHopHeaders(h http.Header) {
 	for _, k := range hopHeaders {
 		h.Del(k)

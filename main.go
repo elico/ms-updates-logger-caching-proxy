@@ -1,11 +1,12 @@
 package main
 
 import (
-	"./requeststore"
 	"flag"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/elico/requeststore-v1"
 )
 
 // A very simple http proxy
@@ -29,9 +30,9 @@ var (
 	retries         int
 	hashSum         bool
 	useDisk         bool
-	//private      bool
+	// private      bool
 	dir       string
-	dumpHttp  bool
+	dumpHTTP  bool
 	cacheHead bool
 )
 
@@ -54,13 +55,13 @@ func init() {
 	flag.StringVar(&dir, "dir", defaultDir, "the dir to store cache data in, implies -disk")
 	//	flag.BoolVar(&useDisk, "disk", false, "whether to store cache data to disk")
 	//	flag.BoolVar(&private, "private", false, "make the cache private")
-	flag.BoolVar(&dumpHttp, "dumphttp", false, "dumps http requests and responses to stdout")
+	flag.BoolVar(&dumpHTTP, "dumpHTTP", false, "dumps http requests and responses to stdout")
 
 	flag.Parse()
 }
 
 func main() {
-	//dir := "./storedata"
+	// dir := "./storedata"
 
 	log.Printf("storing cached resources in %s", dir)
 	if err := os.MkdirAll(dir, 0700); err != nil {
